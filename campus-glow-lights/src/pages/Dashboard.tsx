@@ -54,6 +54,7 @@ const Dashboard = () => {
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("id");
   const [processingReceipt, setProcessingReceipt] = useState(false);
+  const [showAllStreetlights, setShowAllStreetlights] = useState(false);
 
   // Get active tab from URL or default to "dashboard"
   const activeTab = searchParams.get("tab") || "dashboard";
@@ -189,6 +190,8 @@ const Dashboard = () => {
     });
     return result;
   }, [poles, search, statusFilter, sortBy]);
+
+  const displayedFilteredPoles = showAllStreetlights ? filtered : filtered.slice(0, 12);
 
   const generatePDFReport = () => {
     try {
@@ -486,7 +489,7 @@ const Dashboard = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {filtered.map((pole) => (
+                      {displayedFilteredPoles.map((pole) => (
                         <tr key={pole.id} className="border-b last:border-0 hover:bg-muted/30 transition-colors">
                           <td className="px-4 py-3 font-mono font-semibold text-sm text-foreground">{pole.id}</td>
                           <td className="px-4 py-3 text-sm text-muted-foreground">
@@ -554,11 +557,18 @@ const Dashboard = () => {
                       ))}
                     </tbody>
                   </table>
+                  {filtered.length > 12 && (
+                    <div className="p-4 border-t flex justify-center bg-muted/10">
+                      <Button variant="ghost" size="sm" onClick={() => setShowAllStreetlights(!showAllStreetlights)}>
+                        {showAllStreetlights ? "View Less" : `View All (${filtered.length})`}
+                      </Button>
+                    </div>
+                  )}
                 </div>
 
                 {/* Mobile Cards */}
                 <div className="sm:hidden divide-y">
-                  {filtered.map((pole) => (
+                  {displayedFilteredPoles.map((pole) => (
                     <div key={pole.id} className="p-4 space-y-2 active:bg-muted/30" onClick={() => { setSelectedPole(pole); setDrawerOpen(true); }}>
                       <div className="flex items-center justify-between">
                         <span className="font-mono font-semibold text-sm text-foreground">{pole.id}</span>
@@ -579,6 +589,13 @@ const Dashboard = () => {
                       {pole.daysOutage > 0 && <p className="text-xs text-destructive font-medium">{pole.daysOutage} day{pole.daysOutage !== 1 ? "s" : ""} outage</p>}
                     </div>
                   ))}
+                  {filtered.length > 12 && (
+                    <div className="p-4 flex justify-center bg-muted/10">
+                      <Button variant="ghost" size="sm" onClick={() => setShowAllStreetlights(!showAllStreetlights)}>
+                        {showAllStreetlights ? "View Less" : `View All (${filtered.length})`}
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </div>
             </TabsContent>
