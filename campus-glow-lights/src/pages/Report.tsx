@@ -121,8 +121,8 @@ const Report = () => {
             <p className="text-sm font-semibold text-foreground">{faultType}</p>
             {description && <p className="text-xs text-muted-foreground italic border-l-2 pl-2">"{description}"</p>}
           </div>
-          <Button variant="outline" className="w-full" onClick={() => { setSubmitted(false); setPhoto(null); setFaultType(""); setSeverity(""); setDescription(""); setContactInfo(""); }}>
-            Return to Dashboard
+            <Button variant="outline" className="w-full" onClick={() => { setSubmitted(false); setPhoto(null); setFaultType(""); setSeverity(""); setDescription(""); setContactInfo(""); }}>
+            Submit Another Report
           </Button>
         </div>
       </div>
@@ -181,8 +181,8 @@ const Report = () => {
               <p className="text-sm text-muted-foreground font-mono bg-muted p-2 rounded">ID: {poleId}</p>
               <p className="text-xs text-muted-foreground leading-relaxed mt-2">This ID was not found in the system. Please ensure you are scanning an official Campus Glow QR code.</p>
             </div>
-            <Button variant="default" className="w-full font-bold" onClick={() => window.location.href = "/"}>
-              Return to Site
+            <Button variant="default" className="w-full font-bold" asChild>
+              <Link to="/faq">Go to Support</Link>
             </Button>
           </div>
         ) : (

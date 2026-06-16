@@ -1,6 +1,6 @@
 import { Shield, ChevronLeft, HelpCircle, MessageCircle, FileText, Info, Lightbulb, QrCode, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import ugLogo from "@/assets/ug-logo.png";
 import DeveloperCredit from "@/components/DeveloperCredit";
@@ -49,15 +49,26 @@ const faqs = [
 ];
 
 const FAQ = () => {
+    const navigate = useNavigate();
     return (
         <div className="min-h-screen bg-muted/20 pb-12">
             {/* Header */}
             <div className="bg-primary text-primary-foreground px-4 py-8 shadow-lg relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl" />
                 <div className="flex flex-col items-center gap-4 max-w-2xl mx-auto relative">
-                    <Link to="/" className="absolute left-0 top-1/2 -translate-y-1/2 p-2 hover:bg-white/10 rounded-full transition-colors">
+                    <button 
+                        onClick={() => {
+                            if (window.history.length > 2) {
+                                navigate(-1);
+                            } else {
+                                navigate("/report");
+                            }
+                        }} 
+                        type="button"
+                        className="absolute left-0 top-1/2 -translate-y-1/2 p-2 hover:bg-white/10 rounded-full transition-colors text-white"
+                    >
                         <ChevronLeft className="w-6 h-6" />
-                    </Link>
+                    </button>
                     <div className="w-16 h-16 rounded-2xl bg-white/20 p-2.5 shadow-inner">
                         <img src={ugLogo} alt="UG Logo" className="w-full h-full object-contain" />
                     </div>
@@ -104,7 +115,7 @@ const FAQ = () => {
                     <p className="text-sm font-medium text-foreground">Still have questions?</p>
                     <p className="text-xs text-muted-foreground">If you couldn't find what you're looking for, feel free to reach out to the developer or campus maintenance team.</p>
                     <Button variant="outline" className="rounded-xl font-bold" asChild>
-                        <Link to="/report?poleId=UG-LG-001">Go to Reporter</Link>
+                        <Link to="/report">Go to Reporter</Link>
                     </Button>
                 </div>
             </div>
